@@ -1,48 +1,51 @@
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * OOPSBannerApp UC8 – Use Map for Character Patterns and Render via Function
+ *
+ * This version uses a HashMap for efficient key-value storage of patterns.
+ * It introduces a rendering function that can build any word provided.
+ *
+ * @author Srihari & Bhoomika
+ * @version 8.0
+ */
 public class OOPSBannerApp {
 
-    // 1. Define the Inner Class to store Character and its 7-line Pattern
-    static class CharacterPattern {
-        private char character;
-        private String[] pattern;
+    // 1. A Map to store character patterns for easy lookup
+    private static final Map<Character, String[]> patternMap = new HashMap<>();
 
-        public CharacterPattern(char character, String[] pattern) {
-            this.character = character;
-            this.pattern = pattern;
-        }
-
-        public String getRow(int row) {
-            return pattern[row];
-        }
+    static {
+        // 2. Initialize the Map with character data
+        patternMap.put('O', new String[]{
+            "   *** ", "  ** ** ", " ** ** ", " ** ** ", " ** ** ", "  ** ** ", "   *** "
+        });
+        patternMap.put('P', new String[]{
+            "****** ", "** ** ", "** ** ", "****** ", "** ", "** ", "** "
+        });
+        patternMap.put('S', new String[]{
+            " ***** ", "** ** ", "** ", " ***** ", "      ** ", "** ** ", " ***** "
+        });
     }
 
     public static void main(String[] args) {
-        // 2. Initialize the patterns using the Inner Class
-        CharacterPattern charO = new CharacterPattern('O', new String[]{
-            "   *** ", "  ** ** ", " ** ** ", " ** ** ", " ** ** ", "  ** ** ", "   *** "
-        });
+        String word = "OOPS";
+        renderBanner(word);
+    }
 
-        CharacterPattern charP = new CharacterPattern('P', new String[]{
-            "****** ", "** ** ", "** ** ", "****** ", "** ", "** ", "** "
-        });
-
-        CharacterPattern charS = new CharacterPattern('S', new String[]{
-            " ***** ", "** ** ", "** ", " ***** ", "      ** ", "** ** ", " ***** "
-        });
-
-        // 3. Assemble the banner using the objects
-        String[] lines = new String[7];
-        for (int i = 0; i < 7; i++) {
-            lines[i] = String.join(" ", 
-                charO.getRow(i), 
-                charO.getRow(i), 
-                charP.getRow(i), 
-                charS.getRow(i)
-            );
-        }
-
-        // 4. Print the final banner
-        for (String line : lines) {
-            System.out.println(line);
+    /**
+     * Helper function to render any word as a banner using the Map
+     */
+    public static void renderBanner(String word) {
+        for (int row = 0; row < 7; row++) {
+            StringBuilder line = new StringBuilder();
+            for (char c : word.toCharArray()) {
+                String[] pattern = patternMap.get(Character.toUpperCase(c));
+                if (pattern != null) {
+                    line.append(pattern[row]).append(" ");
+                }
+            }
+            System.out.println(line.toString());
         }
     }
 }
